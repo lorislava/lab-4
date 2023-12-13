@@ -1,0 +1,40 @@
+#include <iostream>
+#include <cmath>
+
+int main() {
+  double delta_f[] = { 1.1, 1.4, 1.7, 2.1, 2.6, 4.7, 6.1, 7.0, 10.0,12.8, 16.5, 20.8, 40.6  };
+  double nyu[] = { 25, 22.7, 22.1, 19.8, 17.0, 12.3, 10.7, 10.0, 8.2, 6.7, 5.6, 5.0, 3.5 };
+
+  const int n = 13;
+
+  double ln_delta_f[n];
+  double ln_nyu[n];
+
+  for (int i = 0; i < n; i++) {
+    ln_delta_f[i] = log(delta_f[i]);
+    ln_nyu[i] = log(nyu[i]);
+  }
+
+  double sum_x = 0;
+  double sum_y = 0;
+  double sum_x_squared = 0;
+  double sum_xy = 0;
+
+  for (int i = 0; i < n; i++) {
+    sum_x += ln_delta_f[i];
+    sum_y += ln_nyu[i];
+    sum_x_squared += pow(ln_delta_f[i], 2);
+    sum_xy += ln_delta_f[i] * ln_nyu[i];
+  }
+
+  double mean_x = sum_x / n;
+  double mean_y = sum_y / n;
+
+  double b = (sum_xy - n * mean_x * mean_y) / (sum_x_squared - n * pow(mean_x, 2));
+  double a = exp(mean_y - b * mean_x);
+
+  std::cout << "c = " << a << std::endl;
+  std::cout << "eps = " << b << std::endl;
+
+  return 0;
+}
